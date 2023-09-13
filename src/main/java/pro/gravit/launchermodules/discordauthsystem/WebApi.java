@@ -26,6 +26,7 @@ import pro.gravit.launchserver.socket.handlers.NettyWebAPIHandler;
 import pro.gravit.launchserver.socket.response.auth.AuthResponse;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.Normalizer;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -55,7 +56,7 @@ public class WebApi implements NettyWebAPIHandler.SimpleSeverletHandler {
     }
 
     @Override
-    public void handle(ChannelHandlerContext ctx, FullHttpRequest msg, NettyConnectContext context) throws Exception {
+    public void handle(ChannelHandlerContext ctx, FullHttpRequest msg, NettyConnectContext context) {
         Map<String, String> params = getParamsFromUri(msg.uri());
 
         String state = params.get("state");
@@ -99,7 +100,7 @@ public class WebApi implements NettyWebAPIHandler.SimpleSeverletHandler {
 
         try {
             report = pair.core.authorize("", null, new AuthCodePassword(code), true);
-        } catch (AuthException e) {
+        } catch (IOException e) {
             sendHttpResponse(ctx, simpleHtmlResponse(HttpResponseStatus.FORBIDDEN, e.getMessage()));
             return;
         }

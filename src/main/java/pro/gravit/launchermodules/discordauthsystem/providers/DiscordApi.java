@@ -73,7 +73,8 @@ public class DiscordApi {
 
         return Launcher.gsonManager.gson.fromJson(
                 request.get().body().text(),
-                new TypeToken<List<UserGuildResponse>>(){}.getType()
+                new TypeToken<List<UserGuildResponse>>() {
+                }.getType()
         );
     }
 
@@ -93,7 +94,7 @@ public class DiscordApi {
 
         public String name;
 
-        public UserGuildResponse (String id, String name) {
+        public UserGuildResponse(String id, String name) {
             this.id = id;
             this.name = name;
         }
@@ -102,7 +103,7 @@ public class DiscordApi {
     public static class MemberGuildResponse {
         public String nick;
 
-        public MemberGuildResponse (String nick) {
+        public MemberGuildResponse(String nick) {
             this.nick = nick;
         }
     }

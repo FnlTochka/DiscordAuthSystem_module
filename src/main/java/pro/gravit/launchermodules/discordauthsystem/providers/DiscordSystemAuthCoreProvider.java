@@ -1,7 +1,6 @@
 package pro.gravit.launchermodules.discordauthsystem.providers;
 
 import com.github.slugify.Slugify;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pro.gravit.launcher.ClientPermissions;
@@ -13,7 +12,6 @@ import pro.gravit.launcher.request.secure.HardwareReportRequest;
 import pro.gravit.launchermodules.discordauthsystem.ModuleImpl;
 import pro.gravit.launchserver.LaunchServer;
 import pro.gravit.launchserver.auth.AuthException;
-import pro.gravit.launchserver.auth.AuthProviderPair;
 import pro.gravit.launchserver.auth.MySQLSourceConfig;
 import pro.gravit.launchserver.auth.core.AuthCoreProvider;
 import pro.gravit.launchserver.auth.core.User;
@@ -397,22 +395,22 @@ public class DiscordSystemAuthCoreProvider extends AuthCoreProvider implements A
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
 
     }
 
     @Override
-    public boolean deleteSession(UserSession session) {
-        return exitUser(session.getUser());
+    public void deleteSession(UserSession session) {
+        exitUser(session.getUser());
     }
 
     @Override
-    public boolean exitUser(User user) {
+    public void exitUser(User user) {
         DiscordUser discordUser = getUserByAccessToken(user.getAccessToken());
         if (discordUser == null) {
-            return true;
+            return;
         }
-        return updateDataUser(discordUser.getDiscordId(), null) != null;
+        updateDataUser(discordUser.getDiscordId(), null);
     }
 
     private void setUserHardwareId(Connection connection, String discordId, long hwidId) throws SQLException {
